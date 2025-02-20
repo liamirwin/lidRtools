@@ -19,5 +19,5 @@ Imports:
     grDevices,
     lidR,
     sf
-URL: https://github.com/liamirwin/lidRtools
+URL: https://github.com/liamirwin/lidRtools, https://liamirwin.github.io/lidRtools/
 BugReports: https://github.com/liamirwin/lidRtools/issues
