@@ -14,10 +14,15 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     cli,
+    dplyr,
+    ggplot2,
     glue,
     graphics,
     grDevices,
     lidR,
-    sf
+    sf,
+    terra,
+    tidyselect,
+    tidyterra
 URL: https://github.com/liamirwin/lidRtools, https://liamirwin.github.io/lidRtools/
 BugReports: https://github.com/liamirwin/lidRtools/issues

@@ -4,37 +4,62 @@
 \alias{clip_transect_interactive}
 \title{Interactive Transect Clipping with lidR}
 \usage{
-clip_transect_interactive(las, width = 5, res = 1, subcircle = 0)
+clip_transect_interactive(
+  las,
+  width = 5,
+  res = 1,
+  subcircle = 0,
+  plot_dtm = FALSE
+)
 }
 \arguments{
 \item{las}{A character string specifying the path to a LAS/LAZ file or a LAS object.}
 
-\item{width}{Numeric. The width of the transect. Default is 1.}
+\item{width}{Numeric. The width of the transect. Default is 5.}
 
-\item{res}{Numeric. The resolution for rasterizing the canopy height model. Default is 0.5.}
+\item{res}{Numeric. The resolution for rasterizing the surface model. Default is 1.}
 
-\item{subcircle}{Numeric. Parameter for the \code{p2r} function used in canopy rasterization.
-Default is 0.}
+\item{subcircle}{Numeric. Parameter for the \code{p2r} function used in canopy
+rasterization (CHM only). Default is 0.}
+
+\item{plot_dtm}{Logical. If TRUE, generates and plots a Digital Terrain Model (DTM)
+using \code{rasterize_terrain} for transect selection. If FALSE (default),
+a Canopy Height Model (CHM) is used. Note: DTM generation requires
+classified ground points for best results.}
 }
 \value{
 A LAS object corresponding to the clipped transect.
 }
 \description{
 This function interactively clips a transect from a LAS dataset. It first
-generates a surface height model and displays it. The user is then prompted
-to click two points (start and end of the transect) on the plot. A transect polygon
-is constructed from these points and used to clip the LAS dataset.
+generates a surface model (either a Canopy Height Model or a Digital Terrain Model)
+and displays it. The user is then prompted to click two points (start and end
+of the transect) on the plot. A transect polygon is constructed from these
+points and used to clip the LAS dataset.
 }
 \examples{
 \dontrun{
   # use the Megaplot example dataset from lidR:
   lasFile <- system.file("extdata", "Megaplot.laz", package = "lidR")
 
-  las_clipped <- clip_transect_interactive(
+  # Example 1: Interactive clipping using the default CHM
+  las_clipped_chm <- clip_transect_interactive(
       las       = lasFile,
       width     = 5,
       res       = 1,
       subcircle = 0.25
     )
-    }
+
+  # Example 2: Interactive clipping using a DTM
+  # First, we need to read the LAS file and classify ground points
+  las <- readLAS(lasFile)
+  las <- classify_ground(las, algorithm = csf())
+
+  las_clipped_dtm <- clip_transect_interactive(
+      las       = las,
+      width     = 10,
+      res       = 1,
+      plot_dtm  = TRUE
+    )
+}
 }
